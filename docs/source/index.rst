@@ -11,12 +11,15 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   generic-setup.py
+   generic-setup.rst
    views.rst
    viewlets.rst
    dexterity.rst
    robot.rst
    workflow.rst
+   z3c.form.rst
+   zope-testbrowser.rst
+   misc.rst
 
 
 Indices and tables

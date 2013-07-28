@@ -4,7 +4,9 @@ Policy
 Template
 --------
 
-test_setup.py::
+``test_setup.py``
+
+.. code-block:: python
 
   from Products.CMFCore.utils import getToolByName
   import unittest2 as unittest
@@ -47,14 +49,18 @@ Test if dependencies have been installed::
             pid in installed,
             "The package '%s' appears not to have been installed." % pid')
 
-setup.py::
+``setup.py``
+
+.. code-block:: python
 
     install_requires=[
       'setuptools',
       'collective.mailchimp',
     ],
 
-profiles/default/metadata.xml::
+``profiles/default/metadata.xml``
+
+.. code-block:: xml
 
     <?xml version="1.0"?>
     <metadata>
@@ -68,7 +74,9 @@ profiles/default/metadata.xml::
 Javascript Registration
 -----------------------
 
-Test if a Javascript file has been registered::
+Test if a Javascript file has been registered
+
+.. code-block:: python
 
     def test_js_available(self):
         jsreg = getattr(self.portal, 'portal_javascripts')
@@ -79,41 +87,49 @@ Test if a Javascript file has been registered::
 CSS Registration
 ----------------
 
-def test_mailchimp_css_available(self):
-    cssreg = getToolByName(self.portal, "portal_css")
-    stylesheets_ids = cssreg.getResourceIds()
-    self.assertTrue(
-        '++resource++collective.mailchimp.stylesheets/mailchimp.css'
-        in stylesheets_ids
-    )
+.. code-block:: python
 
- def test_mailchimp_css_enabled(self):
-    cssreg = getToolByName(self.portal, "portal_css")
-    self.assertTrue(
-        cssreg.getResource(
-            '++resource++collective.mailchimp.stylesheets/mailchimp.css'
-        ).getEnabled()
-    )
+  def test_mailchimp_css_available(self):
+      cssreg = getToolByName(self.portal, "portal_css")
+      stylesheets_ids = cssreg.getResourceIds()
+      self.assertTrue(
+          '++resource++collective.mailchimp.stylesheets/mailchimp.css'
+          in stylesheets_ids
+      )
+  
+  def test_mailchimp_css_enabled(self):
+      cssreg = getToolByName(self.portal, "portal_css")
+      self.assertTrue(
+          cssreg.getResource(
+              '++resource++collective.mailchimp.stylesheets/mailchimp.css'
+          ).getEnabled()
+      )
 
 Layer registered
 
-interfaces.py
+``interfaces.py``
 
-from zope.interface import Interface
+.. code-block:: python
 
-class IJungzeelandiaTheme(Interface):
-    """"""
+  from zope.interface import Interface
+  
+  class IJungzeelandiaTheme(Interface):
+      """"""
 
-browserlayer.xml
+``browserlayer.xml``
 
-<layers>
-  <layer
-    name="jungzeelandia.theme"
-    interface="jungzeelandia.theme.interfaces.IJungzeelandiaTheme"
-    />
-</layers>
+.. code-block:: xml
 
-test_setup.py
+  <layers>
+    <layer
+      name="jungzeelandia.theme"
+      interface="jungzeelandia.theme.interfaces.IJungzeelandiaTheme"
+      />
+  </layers>
+
+``test_setup.py``
+
+.. code-block:: python
 
     def test_barackslideshow_layer_available(self):
         from plone.browserlayer import utils
@@ -123,19 +139,23 @@ test_setup.py
 
 Exclude From Search
 
-def makeTypeSearchable(portal, type_id, searchable):
-    ptool = getToolByName(portal, 'portal_properties')
-    blacklisted = list(ptool.site_properties.getProperty('types_not_searched'))
-    if searchable and type_id in blacklisted:
-        blacklisted.remove(type_id)
-    elif not searchable and type_id not in blacklisted:
-        blacklisted.append(type_id)
-    ptool.site_properties.manage_changeProperties(
-        types_not_searched=blacklisted)
+.. code-block:: python
 
-makeTypeSearchable(portal, 'Image', searchable=False)
+  def makeTypeSearchable(portal, type_id, searchable):
+      ptool = getToolByName(portal, 'portal_properties')
+      blacklisted = list(ptool.site_properties.getProperty('types_not_searched'))
+      if searchable and type_id in blacklisted:
+          blacklisted.remove(type_id)
+      elif not searchable and type_id not in blacklisted:
+          blacklisted.append(type_id)
+      ptool.site_properties.manage_changeProperties(
+          types_not_searched=blacklisted)
+  
+  makeTypeSearchable(portal, 'Image', searchable=False)
 
 Test
+
+.. code-block:: python
 
     def test_exclude_images_from_search(self):
         self.assertTrue(
@@ -144,7 +164,9 @@ Test
 
 Resource Directories
 
-test_setup.py
+``test_setup.py``
+
+.. code-block:: python
 
     def test_resources_directory(self):
         self.assertTrue(
@@ -155,24 +177,30 @@ test_setup.py
 
 configure.zcml
 
-  <plone:static
-    type="theme"
-    directory="resources"
-    />
+.. code-block:: xml
+
+    <plone:static
+      type="theme"
+      directory="resources"
+      />
 
 Image
 
-def test_method_render_grafik(self):
-self.portal.mi.eb.invokeFactory('grafik', 'text1')
-image_file = os.path.join(os.path.dirname(__file__), u'logo.jpg')
-self.portal.mi.eb.text1.grafik = NamedBlobImage(
-data=open(image_file, 'r').read(),
-contentType='image/jpg',
-filename=u'logo.jpg'
-)
-self.assertTrue(self.portal.mi.eb.text1.render())
+.. code-block:: python
+
+  def test_method_render_grafik(self):
+    self.portal.mi.eb.invokeFactory('grafik', 'text1')
+    image_file = os.path.join(os.path.dirname(__file__), u'logo.jpg')
+    self.portal.mi.eb.text1.grafik = NamedBlobImage(
+        data=open(image_file, 'r').read(),
+        contentType='image/jpg',
+        filename=u'logo.jpg'
+    )
+    self.assertTrue(self.portal.mi.eb.text1.render())
 
 Test if code is run as test
+
+.. code-block:: python
 
     if self.request['URL'] == 'http://nohost':
         # test run
@@ -181,20 +209,26 @@ Catalog
 
 Catalog Indexes
 
+.. code-block:: python
+
     def test_catalog_indexes(self):
         self.assertTrue('title' in self.portal.portal_catalog.indexes())
         self.assertTrue('total_comments' in self.portal.portal_catalog.indexes())
 
-catalog.xml
+``catalog.xml``
 
-<?xml version="1.0"?>
-<object name="portal_catalog" meta_type="Plone Catalog Tool">
-  <index name="autor_in" meta_type="FieldIndex">
-    <indexed_attr value="autor_in" />
-  </index>
-</object>
+.. code-block:: xml
+
+  <?xml version="1.0"?>
+  <object name="portal_catalog" meta_type="Plone Catalog Tool">
+    <index name="autor_in" meta_type="FieldIndex">
+      <indexed_attr value="autor_in" />
+    </index>
+  </object>
 
 Catalog Metadata
+
+.. code-block:: python
 
     def test_catalog_metadata_installed(self):
         self.portal.invokeFactory('freitag.article.article',
@@ -209,18 +243,21 @@ Catalog Metadata
 
 catalog.xml
 
-<?xml version="1.0"?>
-<object name="portal_catalog" meta_type="Plone Catalog Tool">
-i
- <index name="autor_in" meta_type="FieldIndex">
- <indexed_attr value="autor_in" />
- </index>
+.. code-block:: xml
 
- <column value="autor_in" />
-
-</object>
+  <?xml version="1.0"?>
+  <object name="portal_catalog" meta_type="Plone Catalog Tool">
+   <index name="autor_in" meta_type="FieldIndex">
+   <ndexed_attr value="autor_in" />
+   </index>
+  
+   <column value="autor_in" />
+  
+  </object>
 
 Searchable index
+
+.. code-block:: python
 
     def test_subjects_searchable(self):
         self.folder.invokeFactory("Document", "doc1")
@@ -236,6 +273,8 @@ Searchable index
 Generic Setup
 Hide content type from navigation
 
+.. code-block:: python
+
     def test_hide_types_form_navigation(self):
         navtree_properties = self.portal.portal_properties.navtree_properties
         self.assertTrue(navtree_properties.hasProperty('metaTypesNotToList'))
@@ -247,22 +286,26 @@ Hide content type from navigation
             navtree_properties.metaTypesNotToList)
         self.assertTrue('freitag.membership.registrator' in
             navtree_properties.metaTypesNotToList)
+  
+``profiles/default/propertiestool.xml``
 
-profiles/default/propertiestool.xml
+.. code-block:: xml
 
-<?xml version="1.0"?>
-<object name="portal_properties" meta_type="Plone Properties Tool">
- <object name="navtree_properties" meta_type="Plone Property Sheet">
-  <property name="title">NavigationTree properties</property>
-  <property name="metaTypesNotToList" type="lines">
-   <element value="freitag.membership.emailresetter"/>
-   <element value="freitag.membership.passwordresetter"/>
-   <element value="freitag.membership.registrator"/>
-  </property>
- </object>
-</object>
+  <?xml version="1.0"?>
+  <object name="portal_properties" meta_type="Plone Properties Tool">
+   <object name="navtree_properties" meta_type="Plone Property Sheet">
+    <property name="title">NavigationTree properties</property>
+    <property name="metaTypesNotToList" type="lines">
+     <element value="freitag.membership.emailresetter"/>
+     <element value="freitag.membership.passwordresetter"/>
+     <element value="freitag.membership.registrator"/>
+    </property>
+   </object>
+  </object>
 
 Do not search content type
+
+.. code-block:: python
 
     def test_types_not_searched(self):
         types_not_searched = self.portal.portal_properties\
@@ -274,20 +317,24 @@ Do not search content type
         self.assertTrue('freitag.membership.registrator'
                         in types_not_searched)
 
-profiles/default/propertiestool.xml
+``profiles/default/propertiestool.xml``
 
-<?xml version="1.0"?>
-<object name="portal_properties">
-  <object name="site_properties">
-    <property name="types_not_searched" purge="false">
-      <element value="freitag.membership.emailresetter"/>
-      <element value="freitag.membership.passwordresetter"/>
-      <element value="freitag.membership.registrator"/>
-    </property>
+.. code-block:: python
+
+  <?xml version="1.0"?>
+  <object name="portal_properties">
+    <object name="site_properties">
+      <property name="types_not_searched" purge="false">
+        <element value="freitag.membership.emailresetter"/>
+        <element value="freitag.membership.passwordresetter"/>
+        <element value="freitag.membership.registrator"/>
+      </property>
+    </object>
   </object>
-</object>
 
 Portal Actions
+
+.. code-block:: python
 
     def test_actions(self):
         user_actions = self.portal.portal_actions.user
@@ -295,28 +342,32 @@ Portal Actions
         self.assertTrue('@@my-profile' in user_actions.preferences.url_expr)
         self.assertEquals(user_actions.preferences.visible, True)
 
-profiles/default/actions.xml
+``profiles/default/actions.xml``
 
-<?xml version="1.0"?>
-<object name="portal_actions"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <object name="user">
-  <object name="preferences" meta_type="CMF Action" i18n:domain="freitag.membership">
-   <property name="title" i18n:translate="">Preferences</property>
-   <property name="description" i18n:translate=""></property>
-   <property
-      name="url_expr">string:${globals_view/navigationRootUrl}/@@my-profile</property>
-   <property name="icon_expr"></property>
-   <property name="available_expr">python:member is not None</property>
-   <property name="permissions">
-    <element value="View"/>
-   </property>
-   <property name="visible">True</property>
+.. code-block:: python
+
+  <?xml version="1.0"?>
+  <object name="portal_actions"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+   <object name="user">
+    <object name="preferences" meta_type="CMF Action" i18n:domain="freitag.membership">
+     <property name="title" i18n:translate="">Preferences</property>
+     <property name="description" i18n:translate=""></property>
+     <property
+        name="url_expr">string:${globals_view/navigationRootUrl}/@@my-profile</property>
+     <property name="icon_expr"></property>
+     <property name="available_expr">python:member is not None</property>
+     <property name="permissions">
+      <element value="View"/>
+     </property>
+     <property name="visible">True</property>
+    </object>
+   </object>
   </object>
- </object>
-</object>
 
 enable user folder
+
+.. code-block:: python
 
         self.mtool = self.portal.portal_membership
         self.assertEquals(self.mtool.memberareaCreationFlag, 1)
@@ -324,7 +375,9 @@ enable user folder
         self.assertEquals(self.mtool.getMembersFolder().absolute_url(),
                           'http://nohost/plone/autoren')
 
-setuphandlers.py
+``setuphandlers.py``
+
+.. code-block:: python
 
         membership_tool.membersfolder_id = MEMBERS_FOLDER_ID
         logger.info("Members folder set up: %s\n" % MEMBERS_FOLDER_ID)
@@ -338,6 +391,8 @@ setuphandlers.py
 
 Workflow
 --------
+
+.. code-block:: python
 
     def test_workflows_installed(self):
         """Make sure both comment workflows have been installed properly.
@@ -357,20 +412,26 @@ Workflow
 
 Users and Groups
 
+.. code-block:: python
+
     def test_users_installed(self):
         pas = getToolByName(self.portal, 'acl_users')
         user_ids = [x['login'] for x in pas.searchUsers()]
         self.assertTrue('zell' in user_ids)
 
-setuphandlers.py
+``setuphandlers.py``
 
-def setupGroups(portal):
-    acl_users = getToolByName(portal, 'acl_users')
-    if not acl_users.searchGroups(name='Editorial'):
-        gtool = getToolByName(portal, 'portal_groups')
-        gtool.addGroup('Editorial', roles=[])
+.. code-block:: python
+
+  def setupGroups(portal):
+      acl_users = getToolByName(portal, 'acl_users')
+      if not acl_users.searchGroups(name='Editorial'):
+          gtool = getToolByName(portal, 'portal_groups')
+          gtool.addGroup('Editorial', roles=[])
 
 Test
+
+.. code-block:: python
 
     def test_editorial_group_installed(self):
         self.assertTrue(
@@ -378,14 +439,18 @@ Test
 
 Roles
 
-<?xml version="1.0"?>
-<rolemap>
-  <roles>
-    <role name="Freitag Site Administrator" />
-  </roles>
-</rolemap>
+.. code-block:: xml
 
-test_setup.py
+  <?xml version="1.0"?>
+  <rolemap>
+    <roles>
+      <role name="Freitag Site Administrator" />
+    </roles>
+  </rolemap>
+
+``test_setup.py``
+
+.. code-block:: python
 
     def test_freitag_site_administrator_role_installed(self):
         self.assertTrue(
@@ -393,31 +458,33 @@ test_setup.py
 
 Mock Mailhost
 
-from zope.component import getSiteManager
+.. code-block:: python
 
-from Products.MailHost.interfaces import IMailHost
-from Products.CMFPlone.tests.utils import MockMailHost
-
-
-class EasyNewsletterTests(unittest.TestCase):
-
-    layer = EASYNEWSLETTER_INTEGRATION_TESTING
-
-    def setUp(self):
-        # Set up a mock mailhost
-        self.portal._original_MailHost = self.portal.MailHost
-        self.portal.MailHost = mailhost = MockMailHost('MailHost')
-        sm = getSiteManager(context=self.portal)
-        sm.unregisterUtility(provided=IMailHost)
-        sm.registerUtility(mailhost, provided=IMailHost)
-        # We need to fake a valid mail setup
-        self.portal.email_from_address = "portal@plone.test"
-        self.mailhost = self.portal.MailHost
-
-    def test_send_email(self):
-        self.assertEqual(len(self.mailhost.messages), 1)
-        self.assertTrue(self.mailhost.messages[0])
-        msg = str(self.mailhost.messages[0])
-        self.assertTrue('To: john@plone.test' in msg)
-        self.assertTrue('From: portal@plone.test' in msg)
-
+  from zope.component import getSiteManager
+  
+  from Products.MailHost.interfaces import IMailHost
+  from Products.CMFPlone.tests.utils import MockMailHost
+  
+  
+  class EasyNewsletterTests(unittest.TestCase):
+  
+      layer = EASYNEWSLETTER_INTEGRATION_TESTING
+  
+      def setUp(self):
+          # Set up a mock mailhost
+          self.portal._original_MailHost = self.portal.MailHost
+          self.portal.MailHost = mailhost = MockMailHost('MailHost')
+          sm = getSiteManager(context=self.portal)
+          sm.unregisterUtility(provided=IMailHost)
+          sm.registerUtility(mailhost, provided=IMailHost)
+          # We need to fake a valid mail setup
+          self.portal.email_from_address = "portal@plone.test"
+          self.mailhost = self.portal.MailHost
+  
+      def test_send_email(self):
+          self.assertEqual(len(self.mailhost.messages), 1)
+          self.assertTrue(self.mailhost.messages[0])
+          msg = str(self.mailhost.messages[0])
+          self.assertTrue('To: john@plone.test' in msg)
+          self.assertTrue('From: portal@plone.test' in msg)
+  
