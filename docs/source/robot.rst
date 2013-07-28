@@ -4,7 +4,9 @@ Robot Framework
 Text Field
 ----------
 
-HTML::
+HTML
+
+.. code-block:: html
 
   <input type="text" name="form.widgets.title">
 
@@ -12,13 +14,15 @@ Robot Selector::
 
   Input Text  name=form.widgets.title  My Title
 
-..more: http://rtomac.github.io/robotframework-selenium2library/doc/Selenium2Library.html#Input%20Text
+.. seealso::  http://rtomac.github.io/robotframework-selenium2library/doc/Selenium2Library.html#Input%20Text
 
 
 Text Area
 ---------
 
-HTML::
+HTML
+
+.. code-block:: html
 
   <textarea name="form.widgets.description"></textarea>
 
@@ -26,13 +30,15 @@ Robot Selector::
 
   Input Text  name=form.widgets.title  My Text
 
-..more: http://rtomac.github.io/robotframework-selenium2library/doc/Selenium2Library.html#Input%20Text
+.. seealso::  http://rtomac.github.io/robotframework-selenium2library/doc/Selenium2Library.html#Input%20Text
 
 
 Rich Text (TinyMCE)
 -------------------
 
-HTML::
+HTML
+
+.. code-block:: html
 
   <textarea
     class="mce_editable"
@@ -79,7 +85,9 @@ Robot Keyword::
 Checkbox
 --------
 
-HTML::
+HTML
+
+.. code-block:: html
 
   <input
     type="checkbox"
@@ -130,5 +138,6 @@ Scenario: Submitting a comment displays it in the page
 
 You can now run only the latter test: ./bin/test -m der.freitag -t working_on_it (This is Plone-specific. See Asko's comment below.)
 
+.. note::
 
-..note: http://keeshink.blogspot.de/2013/03/robot-framework-testing-hints.html
+  http://keeshink.blogspot.de/2013/03/robot-framework-testing-hints.html

@@ -9,7 +9,9 @@ Test if a certain role ('External Editor') has been installed::
     def test_external_editor_role_installed(self):
         self.assertTrue('External Editor' in self.wftool.validRoles())
 
-profiles/default/rolemap.xml::
+``profiles/default/rolemap.xml``
+
+.. code-block:: xml
 
     <?xml version="1.0"?>
     <rolemap>
@@ -38,6 +40,8 @@ Test if a certain role ('External Editor') has a certain permission
 Workflow installed
 ------------------
 
+.. code-block:: python
+
     def test_workflows_installed(self):
 
         """Make sure both comment workflows have been installed properly."""
@@ -50,6 +54,8 @@ Workflow installed
 
 Default workflow
 ----------------
+
+.. code-block:: python
 
     def test_default_workflow(self):
 
